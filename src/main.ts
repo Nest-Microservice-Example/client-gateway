@@ -6,7 +6,10 @@ async function bootstrap() {
   const logger = new Logger(AppModule.name);
 
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  await app.listen(AppModule.PORT);
+
+  logger.log(`Gateway running on port ${AppModule.PORT}`);
 }
 
 bootstrap();
