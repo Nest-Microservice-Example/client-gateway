@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config, { ConfigEnum } from './config';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: [config],
     }),
+    ProductsModule,
   ],
   controllers: [],
   providers: [],
