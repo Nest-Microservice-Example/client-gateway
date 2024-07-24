@@ -7,5 +7,6 @@ export type Config = {
   port: number;
   microservice: {
     products: MicroserviceConfig;
+    orders: MicroserviceConfig;
   };
 };

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config, { ConfigEnum } from './config';
 import { ProductsModule } from './products/products.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -9,9 +10,8 @@ import { ProductsModule } from './products/products.module';
       load: [config],
     }),
     ProductsModule,
-  ],
-  controllers: [],
-  providers: [],
+    OrdersModule,
+  ]
 })
 export class AppModule {
   public static PORT: number;
