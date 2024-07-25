@@ -12,21 +12,19 @@ import {
 } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { PRODUCT_SERVICE } from '../config';
+import { NATS_SERVICE } from '../config';
 import { PaginationDto } from '../common';
 import { CreateProductDto, UpdateProductDto } from './dto';
 
 @Controller('products')
 export class ProductsController {
-  constructor(
-    @Inject(PRODUCT_SERVICE) private readonly productsClient: ClientProxy,
-  ) {}
+  constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
   @Post()
   create(@Body() createProductDto: CreateProductDto): Promise<any> {
     try {
       const product = firstValueFrom(
-        this.productsClient.send({ cmd: 'create_product' }, createProductDto),
+        this.client.send('create_product', createProductDto),
       );
 
       return product;
@@ -39,7 +37,7 @@ export class ProductsController {
   findAll(@Query() query: PaginationDto) {
     try {
       const product = firstValueFrom(
-        this.productsClient.send({ cmd: 'find_all_products' }, query),
+        this.client.send('find_all_products', query),
       );
 
       return product;
@@ -52,7 +50,7 @@ export class ProductsController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     try {
       const product = await firstValueFrom(
-        this.productsClient.send({ cmd: 'find_one_products' }, { id }),
+        this.client.send('find_one_products', { id }),
       );
 
       return product;
@@ -68,10 +66,7 @@ export class ProductsController {
   ) {
     try {
       const product = firstValueFrom(
-        this.productsClient.send(
-          { cmd: 'update_product' },
-          { id, ...updateProductDto },
-        ),
+        this.client.send('update_product', { id, ...updateProductDto }),
       );
 
       return product;
@@ -84,7 +79,7 @@ export class ProductsController {
   remove(@Param('id', ParseIntPipe) id: number) {
     try {
       const product = firstValueFrom(
-        this.productsClient.send({ cmd: 'delete_product' }, { id }),
+        this.client.send('delete_product', { id }),
       );
 
       return product;

@@ -11,7 +11,7 @@ import { OrdersModule } from './orders/orders.module';
     }),
     ProductsModule,
     OrdersModule,
-  ]
+  ],
 })
 export class AppModule {
   public static PORT: number;
