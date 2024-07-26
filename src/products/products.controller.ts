@@ -50,7 +50,7 @@ export class ProductsController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     try {
       const product = await firstValueFrom(
-        this.client.send('find_one_products', { id }),
+        this.client.send('find_one_product', { id }),
       );
 
       return product;
