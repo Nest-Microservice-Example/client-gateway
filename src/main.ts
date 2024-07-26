@@ -23,6 +23,8 @@ async function bootstrap() {
 
   await app.listen(AppModule.PORT);
 
+  console.log('Hello World - Primer commit')
+
   logger.log(`Gateway running on port ${AppModule.PORT}`);
 }
 
