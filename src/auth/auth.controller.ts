@@ -1,8 +1,12 @@
-import {Body, Controller, HttpStatus, Inject, Post} from '@nestjs/common';
+import {Body, Controller, Get, Inject, Post, Req, Res, UseGuards} from '@nestjs/common';
 import {NATS_SERVICE} from "../config";
 import {ClientProxy, RpcException} from "@nestjs/microservices";
 import {LoginUserDto, RegisterUserDto} from "./dto";
 import {firstValueFrom} from "rxjs";
+import {Request} from 'express'
+import {AuthGuard} from "./guard";
+import {Token, User} from "./decorators";
+import {UserPayload} from "./interfaces";
 
 @Controller('auth')
 export class AuthController {
@@ -34,12 +38,14 @@ export class AuthController {
         }
     }
 
-    @Post('verify')
-    public async verify() {
+    @UseGuards(AuthGuard)
+    @Get('verify')
+    public async verify(@User() user: UserPayload, @Token() token: string) {
         try {
-            const resp = await firstValueFrom(this.client.send('auth.user.verify', {}))
-
-            return resp
+            return {
+                user,
+                token
+            }
         } catch (error) {
             throw new RpcException(error);
         }
