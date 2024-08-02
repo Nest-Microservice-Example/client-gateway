@@ -14,7 +14,7 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
     const rpcError = exception.getError();
 
     const timestamp = new Date().toISOString();
-
+    console.log(rpcError)
     if (
       typeof rpcError === 'object' &&
       'status' in rpcError &&
